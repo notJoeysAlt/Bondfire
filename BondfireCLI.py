@@ -15,29 +15,27 @@ async_client = AsyncClient(
 )
 
 async def round2():
-        chatMessages.clear()
-        print(*roomList, sep="\n")
-        inputRoomID = input("Enter the room ID #: ")
-        roomMessages = await async_client.room_messages(
-            start="", room_id=roomList[int(inputRoomID)]["roomID"], limit=100
-        )
-        for each in roomMessages.chunk:
-            if type(each) == RoomMessageText:
-                chatMessages.append(each.body)
+    chatMessages.clear()
+    print(*roomList, sep="\n")
+    inputRoomID = input("Enter the room ID #: ")
+    roomMessages = await async_client.room_messages(
+        start="", room_id=roomList[int(inputRoomID)]["roomID"], limit=100
+    )
+    for each in roomMessages.chunk:
+        if type(each) == RoomMessageText:
+            chatMessages.append(each.body)
 
-        chatMessages.reverse()
-        print(*chatMessages, sep="\n")
-                
-
-        inputMessage = input("Enter message: ")
-        
-        await async_client.room_send(
-            room_id=roomList[int(inputRoomID)]["roomID"],
-            message_type="m.room.message",
-            content={"msgtype": "m.text", "body": inputMessage},
-        )
-        await async_client.close()
-        print("sent: " + inputMessage)
+    chatMessages.reverse()
+    print(*chatMessages, sep="\n")
+    inputMessage = input("Enter message: ")
+    
+    await async_client.room_send(
+        room_id=roomList[int(inputRoomID)]["roomID"],
+        message_type="m.room.message",
+        content={"msgtype": "m.text", "body": inputMessage},
+    )
+    await async_client.close()
+    print("sent: " + inputMessage)
 
 async def main():
     response = await async_client.login(inputPasswordID)
